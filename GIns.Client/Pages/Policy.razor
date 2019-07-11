@@ -1,0 +1,240 @@
+﻿@page "/Policy"
+@using GIns.Shared
+@inject HttpClient Http
+
+@*@using System.IO;
+@using System.Text;
+@using Newtonsoft.Json;
+@using OfficeOpenXml;
+@using OfficeOpenXml.Table;
+@inject IFileReaderService fileReaderService;*@
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+@*<input type="file" @ref="@inputTypeFileElement" />
+<button @onclick="@ReadFile">Read file</button>*@
+
+@if (_Policies == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>PolicyType</th>
+                <th>PolicyCode</th>
+                <th>PolicyActive</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var Policy in _Policies)
+            {
+                <tr>
+                    <td>@Policy.PolicyType</td>
+                    <td>@Policy.PolicyCode</td>
+                    <td>@Policy.PolicyActive</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+Policies[] _Policies;
+//ElementRef inputTypeFileElement;
+int Mode = 0;
+
+protected override async Task OnInitAsync()
+{
+    _Policies = await Http.GetJsonAsync<Policies[]>("api/Policy/GetPoliciesAsync?" + Mode);
+}
+
+
+
+//public async Task ReadFile()
+//{
+
+//    var files = await fileReaderService.CreateReference(inputTypeFileElement).EnumerateFilesAsync();
+
+//    var stream = await files.First().OpenReadAsync();
+
+//    //_excel = JsonConvert.DeserializeObject<GInsExcelMap>(ReadFile(stream).ToString());
+
+//}
+
+/// <summary>
+/// /Home/ReadFile
+/// </summary>
+//public async Task ReadFile()
+//{
+//    var fileDownloadName = "report.xlsx";
+//    var reportsFolder = "reports";
+//    var fileInfo = new FileInfo(Path.Combine(_hostingEnvironment.WebRootPath, reportsFolder, fileDownloadName));
+//    if (!fileInfo.Exists)
+//    {
+//        // Create an excel file
+//        //using (var package = createExcelPackage())
+//        //{
+//        //    package.SaveAs(fileInfo);
+//        //}
+
+//        using (var package = new ExcelPackage(fileInfo))
+//        {
+//            return readExcelPackageToString(package, package.Workbook.Worksheets[worksheetName]);
+//        }
+//    }
+//}
+
+//    return readExcelPackage(fileInfo, worksheetName: "Employee");
+//}
+
+
+//private string readExcelPackage(FileInfo fileInfo, string worksheetName)
+//{
+//    using (var package = new ExcelPackage(fileInfo))
+//    {
+//        return readExcelPackageToString(package, package.Workbook.Worksheets[worksheetName]);
+//    }
+//}
+
+
+//private string readExcelPackageToString(ExcelPackage package, ExcelWorksheet worksheet)
+//{
+//    var rowCount = worksheet.Dimension?.Rows;
+//    var colCount = worksheet.Dimension?.Columns;
+
+//    if (!rowCount.HasValue || !colCount.HasValue)
+//    {
+//        return string.Empty;
+//    }
+
+//    //var sb = new StringBuilder();
+//    StringBuilder sb = new StringBuilder();
+//    StringWriter sw = new StringWriter(sb);
+
+//    for (int row = 1; row <= rowCount.Value; row++)
+//    {
+
+
+
+//        using (JsonWriter writer = new JsonTextWriter(sw))
+//        {
+//            writer.Formatting = Formatting.Indented;
+
+//            writer.WriteStartObject();
+//            writer.WritePropertyName("ID");
+//            writer.WriteValue(row);
+//            writer.WritePropertyName("PayorID");
+//            writer.WriteValue(worksheet.Cells[row, 1].Value);
+//            writer.WritePropertyName("CompanyName");
+//            writer.WriteValue(worksheet.Cells[row, 2].Value);
+//            writer.WritePropertyName("BenefitContractID");
+//            writer.WriteValue(worksheet.Cells[row, 3].Value);
+//            writer.WritePropertyName("BenefitContractName");
+//            writer.WriteValue(worksheet.Cells[row, 4].Value);
+//            writer.WritePropertyName("MemberID");
+//            writer.WriteValue(worksheet.Cells[row, 5].Value);
+//            writer.WritePropertyName("LastName");
+//            writer.WriteValue(worksheet.Cells[row, 6].Value);
+//            writer.WritePropertyName("Firstname");
+//            writer.WriteValue(worksheet.Cells[row, 7].Value);
+//            writer.WritePropertyName("Relationship");
+//            writer.WriteValue(worksheet.Cells[row, 8].Value);
+//            writer.WritePropertyName("DOB");
+//            writer.WriteValue(worksheet.Cells[row, 9].Value);
+//            writer.WritePropertyName("Gender");
+//            writer.WriteValue(worksheet.Cells[row, 10].Value);
+//            writer.WritePropertyName("Address1");
+//            writer.WriteValue(worksheet.Cells[row, 11].Value);
+//            writer.WritePropertyName("Address2");
+//            writer.WriteValue(worksheet.Cells[row, 12].Value);
+//            writer.WritePropertyName("City");
+//            writer.WriteValue(worksheet.Cells[row, 13].Value);
+//            writer.WritePropertyName("Country");
+//            writer.WriteValue(worksheet.Cells[row, 14].Value);
+//            writer.WritePropertyName("Phone");
+//            writer.WriteValue(worksheet.Cells[row, 15].Value);
+//            writer.WritePropertyName("EXT");
+//            writer.WriteValue(worksheet.Cells[row, 14].Value);
+//            writer.WritePropertyName("Phone2");
+//            writer.WriteValue(worksheet.Cells[row, 15].Value);
+
+//            writer.WriteEnd();
+//            writer.WriteEndObject();
+//        }
+//        //for (int col = 1; col <= colCount.Value; col++)
+//        //{
+//        //    sb.AppendFormat("{0}\t", worksheet.Cells[row, col].Value);
+//        //}
+//        //sb.Append(Environment.NewLine);
+//    }
+//    return sb.ToString();
+//    //Console.WriteLine(sb.ToString());
+//}
+
+//private ExcelPackage createExcelPackage()
+//{
+//    var package = new ExcelPackage();
+//    package.Workbook.Properties.Title = "Salary Report";
+//    package.Workbook.Properties.Author = "Vahid N.";
+//    package.Workbook.Properties.Subject = "Salary Report";
+//    package.Workbook.Properties.Keywords = "Salary";
+
+
+//    var worksheet = package.Workbook.Worksheets.Add("Employee");
+
+//    //First add the headers
+//    worksheet.Cells[1, 1].Value = "ID";
+//    worksheet.Cells[1, 2].Value = "Name";
+//    worksheet.Cells[1, 3].Value = "Gender";
+//    worksheet.Cells[1, 4].Value = "Salary (in $)";
+
+//    //Add values
+
+//    var numberformat = "#,##0";
+//    var dataCellStyleName = "TableNumber";
+//    var numStyle = package.Workbook.Styles.CreateNamedStyle(dataCellStyleName);
+//    numStyle.Style.Numberformat.Format = numberformat;
+
+//    worksheet.Cells[2, 1].Value = 1000;
+//    worksheet.Cells[2, 2].Value = "Jon";
+//    worksheet.Cells[2, 3].Value = "M";
+//    worksheet.Cells[2, 4].Value = 5000;
+//    worksheet.Cells[2, 4].Style.Numberformat.Format = numberformat;
+
+//    worksheet.Cells[3, 1].Value = 1001;
+//    worksheet.Cells[3, 2].Value = "Graham";
+//    worksheet.Cells[3, 3].Value = "M";
+//    worksheet.Cells[3, 4].Value = 10000;
+//    worksheet.Cells[3, 4].Style.Numberformat.Format = numberformat;
+
+//    worksheet.Cells[4, 1].Value = 1002;
+//    worksheet.Cells[4, 2].Value = "Jenny";
+//    worksheet.Cells[4, 3].Value = "F";
+//    worksheet.Cells[4, 4].Value = 5000;
+//    worksheet.Cells[4, 4].Style.Numberformat.Format = numberformat;
+
+//    // Add to table / Add summary row
+//    var tbl = worksheet.Tables.Add(new ExcelAddressBase(fromRow: 1, fromCol: 1, toRow: 4, toColumn: 4), "Data");
+//    tbl.ShowHeader = true;
+//    tbl.TableStyle = TableStyles.Dark9;
+//    tbl.ShowTotal = true;
+//    tbl.Columns[3].DataCellStyleName = dataCellStyleName;
+//    tbl.Columns[3].TotalsRowFunction = RowFunctions.Sum;
+//    worksheet.Cells[5, 4].Style.Numberformat.Format = numberformat;
+
+//    // AutoFitColumns
+//    worksheet.Cells[1, 1, 4, 4].AutoFitColumns();
+
+//    worksheet.HeaderFooter.OddFooter.InsertPicture(
+//        new FileInfo(Path.Combine(_hostingEnvironment.WebRootPath, "images", "captcha.jpg")),
+//        PictureAlignment.Right);
+
+//    return package;
+//}
+
+}

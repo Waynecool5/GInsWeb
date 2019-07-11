@@ -1,0 +1,219 @@
+﻿@page "/customeredit"
+@using GIns.Shared
+@inject HttpClient Http
+
+<!-- begin:: Content -->
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+    <!--begin::Portlet-->
+    <div class="kt-portlet">
+        <div class="kt-portlet__head">
+            <div class="kt-portlet__head-label">
+                <h3 class="kt-portlet__head-title">
+                    Form Widgets Validation Examples
+                </h3>
+            </div>
+        </div>
+        <!--begin::Form-->
+        <form class="kt-form kt-form--label-right" id="kt_form_1">
+            <div class="kt-portlet__body">
+                <div class="kt-form__content">
+                    <div class="kt-alert m-alert--icon alert alert-danger kt-hidden" role="alert" id="kt_form_1_msg">
+                        <div class="kt-alert__icon">
+                            <i class="la la-warning"></i>
+                        </div>
+                        <div class="kt-alert__text">
+                            Oh snap! Change a few things up and try submitting again.
+                        </div>
+                        <div class="kt-alert__close">
+                            <button type="button" class="close" data-close="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label col-lg-3 col-sm-12">Bootstrap Date Picker *</label>
+                    <div class="col-lg-4 col-md-9 col-sm-12">
+                        <div class='input-group'>
+                            <input type='text' class="form-control" name="date" placeholder="Select date" id='kt_datepicker' />
+                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                    <i class="la la-calendar-check-o"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <span class="form-text text-muted">Select a date</span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label col-lg-3 col-sm-12">Bootstrap Date Time Picker *</label>
+                    <div class="col-lg-4 col-md-9 col-sm-12">
+                        <div class='input-group date'>
+                            <input type='text' class="form-control" name="datetime" placeholder="Select date & time" id='kt_datetimepicker' />
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="la la-calendar-check-o glyphicon-th"></i></span>
+                            </div>
+                        </div>
+                        <span class="form-text text-muted">Select a date time</span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label col-lg-3 col-sm-12">Bootstrap Time Picker *</label>
+                    <div class="col-lg-4 col-md-9 col-sm-12">
+                        <div class='input-group date'>
+                            <input class="form-control" id='kt_timepicker' placeholder="Select time" name="time" type="text" />
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="la la-clock-o"></i></span>
+                            </div>
+                        </div>
+                        <span class="form-text text-muted">Select time</span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label col-lg-3 col-sm-12">Bootstrap Date Range Picker *</label>
+                    <div class="col-lg-4 col-md-9 col-sm-12">
+                        <div class='input-group' id='kt_daterangepicker'>
+                            <input type='text' class="form-control" readonly name="daterange" placeholder="Select date range" />
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="la la-calendar-check-o"></i></span>
+                            </div>
+                        </div>
+                        <span class="form-text text-muted">Select a date range</span>
+                    </div>
+                </div>
+
+                <div class="kt-form__seperator kt-form__seperator--dashed kt-form__seperator--space"></div>
+
+                <div class="form-group row">
+                    <label class="col-form-label col-lg-3 col-sm-12">Bootstrap Switch *</label>
+                    <div class="col-lg-4 col-md-9 col-sm-12">
+                        <input data-switch="true" type="checkbox" name="switch" id="test" data-on-color="success" data-off-color="warning">
+                        <span class="form-text text-muted"></span>
+                    </div>
+                </div>
+
+                <div class="kt-form__seperator kt-form__seperator--dashed kt-form__seperator--space"></div>
+
+                <div class="form-group row">
+                    <label class="col-form-label col-lg-3 col-sm-12">Bootstrap Select *</label>
+                    <div class="col-lg-4 col-md-9 col-sm-12">
+                        <select class="form-control kt-bootstrap-select" id="kt_bootstrap_select" multiple name="select">
+                            <optgroup label="Picnic" data-max-options="2">
+                                <option>Mustard</option>
+                                <option>Ketchup</option>
+                                <option>Relish</option>
+                            </optgroup>
+                            <optgroup label="Camping" data-max-options="2">
+                                <option>Tent</option>
+                                <option>Flashlight</option>
+                                <option>Toilet Paper</option>
+                            </optgroup>
+                        </select>
+                        <span class="form-text text-muted">Select at least 2 and maximum 4 options</span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-form-label col-lg-3 col-sm-12">Select2 *</label>
+                    <div class="col-lg-4 col-md-9 col-sm-12">
+                        <select class="form-control kt-select2" id="kt_select2" name="select2">
+                            <option></option>
+                            <optgroup label="Alaskan/Hawaiian Time Zone">
+                                <option value="AK">Alaska</option>
+                                <option value="HI">Hawaii</option>
+                            </optgroup>
+                            <optgroup label="Pacific Time Zone">
+                                <option value="CA">California</option>
+                                <option value="NV">Nevada</option>
+                                <option value="OR">Oregon</option>
+                                <option value="WA">Washington</option>
+                            </optgroup>
+                            <optgroup label="Mountain Time Zone">
+                                <option value="AZ">Arizona</option>
+                                <option value="CO">Colorado</option>
+                                <option value="ID">Idaho</option>
+                                <option value="MT">Montana</option>
+                                <option value="NE">Nebraska</option>
+                                <option value="NM">New Mexico</option>
+                                <option value="ND">North Dakota</option>
+                                <option value="UT">Utah</option>
+                                <option value="WY">Wyoming</option>
+                            </optgroup>
+                            <optgroup label="Central Time Zone">
+                                <option value="AL">Alabama</option>
+                                <option value="AR">Arkansas</option>
+                                <option value="IL">Illinois</option>
+                                <option value="IA">Iowa</option>
+                                <option value="KS">Kansas</option>
+                                <option value="KY">Kentucky</option>
+                                <option value="LA">Louisiana</option>
+                                <option value="MN">Minnesota</option>
+                                <option value="MS">Mississippi</option>
+                                <option value="MO">Missouri</option>
+                                <option value="OK">Oklahoma</option>
+                                <option value="SD">South Dakota</option>
+                                <option value="TX">Texas</option>
+                                <option value="TN">Tennessee</option>
+                                <option value="WI">Wisconsin</option>
+                            </optgroup>
+                            <optgroup label="Eastern Time Zone">
+                                <option value="CT">Connecticut</option>
+                                <option value="DE">Delaware</option>
+                                <option value="FL">Florida</option>
+                                <option value="GA">Georgia</option>
+                                <option value="IN">Indiana</option>
+                                <option value="ME">Maine</option>
+                                <option value="MD">Maryland</option>
+                                <option value="MA">Massachusetts</option>
+                                <option value="MI">Michigan</option>
+                                <option value="NH">New Hampshire</option>
+                                <option value="NJ">New Jersey</option>
+                                <option value="NY">New York</option>
+                                <option value="NC">North Carolina</option>
+                                <option value="OH">Ohio</option>
+                                <option value="PA">Pennsylvania</option>
+                                <option value="RI">Rhode Island</option>
+                                <option value="SC">South Carolina</option>
+                                <option value="VT">Vermont</option>
+                                <option value="VA">Virginia</option>
+                                <option value="WV">West Virginia</option>
+                            </optgroup>
+                        </select>
+                        <span class="form-text text-muted">Select an option</span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-form-label col-lg-3 col-sm-12">Typeahead *</label>
+                    <div class="col-lg-4 col-md-9 col-sm-12">
+                        <div class="kt-typeahead">
+                            <input class="form-control" id="kt_typeahead" type="text" name="typeahead" placeholder="States of USA">
+                        </div>
+                        <span class="form-text text-muted">Please select a state</span>
+                    </div>
+                </div>
+
+                <div class="kt-form__seperator kt-form__seperator--dashed kt-form__seperator--space"></div>
+
+                <div class="form-group row">
+                    <label class="col-form-label col-lg-3 col-sm-12">Markdown *</label>
+                    <div class="col-lg-7 col-md-9 col-sm-12">
+                        <textarea name="markdown" class="form-control" data-provide="markdown" rows="10"></textarea>
+                        <span class="form-text text-muted">Enter some markdown content</span>
+                    </div>
+                </div>
+            </div>
+            <div class="kt-portlet__foot">
+                <div class=" ">
+                    <div class="row">
+                        <div class="col-lg-9 ml-lg-auto">
+                            <button type="submit" class="btn btn-success">Validate</button>
+                            <button type="reset" class="btn btn-secondary">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--end::Form-->
+    </div>
+    <!--end::Portlet-->
+</div>
+<!-- end:: Content -->
