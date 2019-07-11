@@ -1,7 +1,6 @@
 ﻿@page "/customeredit"
 @using GIns.Shared
 @inject HttpClient Http
-
 <!-- begin:: Content -->
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
     <!--begin::Portlet-->
@@ -14,7 +13,7 @@
             </div>
         </div>
         <!--begin::Form-->
-        <form class="kt-form kt-form--label-right" id="kt_form_1">
+        <form class="kt-form kt-form--label-right" id="kt_form_1" method="post" enctype="multipart/form-data" action="api/Excel/ImportExcelAsync">
             <div class="kt-portlet__body">
                 <div class="kt-form__content">
                     <div class="kt-alert m-alert--icon alert alert-danger kt-hidden" role="alert" id="kt_form_1_msg">
@@ -77,6 +76,19 @@
                             </div>
                         </div>
                         <span class="form-text text-muted">Select a date range</span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-form-label col-lg-3 col-sm-12">Excel Upload *</label>
+                    <div class="col-lg-4 col-md-9 col-sm-12">
+                        <div class='input-group' id='kt_daterangepicker'>
+                            <input type='file' class="form-control" readonly name="formFile" placeholder="Select Excel File" />
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="la la-calendar-check-o"></i></span>
+                            </div>
+                        </div>
+                        <span class="form-text text-muted">Select Excel File</span>
                     </div>
                 </div>
 
@@ -217,3 +229,19 @@
     <!--end::Portlet-->
 </div>
 <!-- end:: Content -->
+
+@code {
+
+//Customers[] _Customers;
+//ElementRef inputTypeFileElement;
+//int Mode = 0;
+
+
+
+//protected override async Task OnInitAsync()
+//    {
+//        _Customers = await Http.GetJsonAsync<Customers[]>("api/Customer/GetCustomersAsync?" + Mode);
+
+//    }
+
+}

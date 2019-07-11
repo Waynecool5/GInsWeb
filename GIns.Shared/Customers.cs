@@ -31,4 +31,17 @@ namespace GIns.Shared
             public DateTime RegDate { get; set; }
             public string CusTimeStamp { get; set; }
     }
+
+    //public class tester
+    //{
+    //    //public int ID { get; set; }
+    //    //public string FirstName { get; set; }
+    //    //public string MidInit { get; set; }
+    //    //public string LastName { get; set; }
+    //    //public string LoginName { get; set; }
+    //    //public string LoginPwd { get; set; }
+    //    //public string UserLevel { get; set; }
+    //    public IFormFile File { get; set; }
+    //    //public string CompanyName { get; set; }
+    //}
 }

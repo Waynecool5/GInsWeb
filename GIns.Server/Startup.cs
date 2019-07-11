@@ -10,6 +10,7 @@ using System.Linq;
 using GIns.Server.Controllers.Customer;
 using GIns.Server.Controllers.Policy;
 using GIns.Server.Controllers.User;
+using GIns.Server.Controllers.Excel;
 
 namespace GIns.Server
 {
@@ -30,7 +31,7 @@ namespace GIns.Server
             services.AddTransient<ICustomerRepository, CustomerDataAccess>();
             services.AddTransient<IPolicyRepository, PolicyDataAccess>();
             services.AddTransient<IUserRepository,UserDataAccess> ();
-
+            services.AddTransient<IExcelRepository, ExcelDataAccess>();
 
             //***PM: Install-Package Insight.Database
             SqlInsightDbProvider.RegisterProvider();
