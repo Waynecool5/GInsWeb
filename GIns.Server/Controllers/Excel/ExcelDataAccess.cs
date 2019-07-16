@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using GIns.Shared;
 using Insight.Database;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 
 namespace GIns.Server.Controllers.Excel
@@ -16,8 +17,14 @@ namespace GIns.Server.Controllers.Excel
     {
         public ICollection<GInsExcelMap> oGInsExcelMap { get; set; }
         private HttpClient _client;
+        public ICollection<AppList> Results { get; set; }
+        public IList<PayorList> PList { get; set; }
+        public IList<CompNameList> NameList { get; set; }
+        public IList<BenefitContList> BenList { get; set; }
+        public IList<BenefitNameList> BentNameList { get; set; }
+        public IList<ClientList> ClientList { get; set; }
 
-        private readonly string conn = "Data Source=" + ClsGlobal.SqlSource2 + "; Initial Catalog=" + ClsGlobal.SqlCatalog + "; Persist Security Info=True;" +
+    private readonly string conn = "Data Source=" + ClsGlobal.SqlSource2 + "; Initial Catalog=" + ClsGlobal.SqlCatalog + "; Persist Security Info=True;" +
                   "User ID=" + ClsGlobal.SqlUser + ";Password=" + ClsGlobal.SqlPassword + "";
 
         public ExcelDataAccess()
@@ -33,7 +40,7 @@ namespace GIns.Server.Controllers.Excel
         //    this._hostingEnvironment = hostingEnvironment;
         //}
 
-        public async Task<List<GInsExcelMap>> ImportExcelAsync(IFormFile formFile)
+        public async Task<IActionResult> ImportExcelAsync(IFormFile formFile)
         {
             if (formFile == null || formFile.Length <= 0)
             {
@@ -98,6 +105,22 @@ namespace GIns.Server.Controllers.Excel
                             // you can get the provider object by:
                             var sqlBulk = (SqlBulkCopy)bulk.InnerBulkCopy;
                         });
+
+                        //Multiple return set
+                       var Results = Sqlconn.QueryResults<PayorList, CompNameList, BenefitContList, BenefitNameList, ClientList>("doNewCustomers", Parameters.Empty);//,
+                                                                                        //Query.Returns(Some<AppList>.Records)
+                                                                                        //            .Then(Some<PayorList>.Records)
+                                                                                        //                .Then(Some<CompNameList>.Records)
+                                                                                        //                .Then(Some<BenefitContList>.Records)
+                                                                                        //                .Then(Some<BenefitNameList>.Records)
+                                                                                        //                .Then(Some<ClientList>.Records));
+
+
+                        IList<PayorList> PList = Results.Set1;
+                        IList<CompNameList> NameList = Results.Set2;
+                        IList<BenefitContList> BenList = Results.Set3;
+                        IList<BenefitNameList> BentNameList = Results.Set4;
+                        IList<ClientList> ClientList = Results.Set5;
                     }
 
                     ////Insert to SQL ExcelClients Table
@@ -111,10 +134,16 @@ namespace GIns.Server.Controllers.Excel
 
 
                 }
+                // retrieve the results into the respective models
+                //var PayorList = Results.Select<PayorList>();
+                //var CompNameList = Results.Read<CompNameList>();
 
-                return list;
+                return Ok(PList, NameList, BenList, BentNameList, ClientList);
+               // return Results;
             }
 
         }
+
+
     }
 }

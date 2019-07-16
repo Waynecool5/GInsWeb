@@ -33,6 +33,7 @@ namespace GIns.Server
             services.AddTransient<IUserRepository,UserDataAccess> ();
             services.AddTransient<IExcelRepository, ExcelDataAccess>();
 
+
             //***PM: Install-Package Insight.Database
             SqlInsightDbProvider.RegisterProvider();
             //***Insight.Database.Json Class[Column(SerializationMode=SerializationMode.Json)]

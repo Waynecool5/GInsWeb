@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Insight.Database;
 using System.Data.SqlClient;
 
+
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace GIns.Server.Controllers.Excel
@@ -35,7 +36,7 @@ namespace GIns.Server.Controllers.Excel
        // [HttpPost("import")]
         [HttpPost]
         [Route("ImportExcelAsync")]
-        public async Task<List<GInsExcelMap>> ImportExcelAsync(IFormFile formFile)
+        public async Task<IActionResult> ImportExcelAsync(IFormFile formFile)
         {
             return await _ExcelRepository.ImportExcelAsync(formFile);
         }
