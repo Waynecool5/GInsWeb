@@ -7,13 +7,11 @@ namespace GIns.Shared
 
     public class AppList
     {
-        public int App_ID { get; set; }
-        public IList<PayorList> PayorList { get; set; }
-        public IList<CompNameList> CompNameList { get; set; }
-        public IList<BenefitContList> BenefitContList { get; set; }
-        public IList<BenefitNameList> BenefitNameList { get; set; }
-        public IList<ClientList> ClientList { get; set; }
-
+        public IEnumerable<PayorList> PList { get; set; }
+        public IEnumerable<CompNameList> CmpNameList { get; set; }
+        public IEnumerable<BenefitContList> BenefContList { get; set; }
+        public IEnumerable<BenefitNameList> BenefNameList { get; set; }
+        public IEnumerable<ClientList> CliList { get; set; }
     }
   
 

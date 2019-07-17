@@ -36,7 +36,7 @@ namespace GIns.Server.Controllers.Excel
        // [HttpPost("import")]
         [HttpPost]
         [Route("ImportExcelAsync")]
-        public async Task<IActionResult> ImportExcelAsync(IFormFile formFile)
+        public async Task<GInsExcelMap> ImportExcelAsync(IFormFile formFile)
         {
             return await _ExcelRepository.ImportExcelAsync(formFile);
         }

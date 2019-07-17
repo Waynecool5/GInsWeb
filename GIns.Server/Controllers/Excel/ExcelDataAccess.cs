@@ -9,6 +9,7 @@ using GIns.Shared;
 using Insight.Database;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using OfficeOpenXml;
 
 namespace GIns.Server.Controllers.Excel
@@ -17,15 +18,18 @@ namespace GIns.Server.Controllers.Excel
     {
         public ICollection<GInsExcelMap> oGInsExcelMap { get; set; }
         private HttpClient _client;
-        public ICollection<AppList> Results { get; set; }
-        public IList<PayorList> PList { get; set; }
-        public IList<CompNameList> NameList { get; set; }
-        public IList<BenefitContList> BenList { get; set; }
-        public IList<BenefitNameList> BentNameList { get; set; }
-        public IList<ClientList> ClientList { get; set; }
+     
+        //public ICollection<AppList> Results { get; set; }
+        //public IList<PayorList> PList { get; set; }
+        //public IList<CompNameList> NameList { get; set; }
+        //public IList<BenefitContList> BenList { get; set; }
+        //public IList<BenefitNameList> BentNameList { get; set; }
+        //public IList<ClientList> ClientList { get; set; }
 
-    private readonly string conn = "Data Source=" + ClsGlobal.SqlSource2 + "; Initial Catalog=" + ClsGlobal.SqlCatalog + "; Persist Security Info=True;" +
+        private readonly string conn = "Data Source=" + ClsGlobal.SqlSource2 + "; Initial Catalog=" + ClsGlobal.SqlCatalog + "; Persist Security Info=True;" +
                   "User ID=" + ClsGlobal.SqlUser + ";Password=" + ClsGlobal.SqlPassword + "";
+
+        private readonly AppList mResults;
 
         public ExcelDataAccess()
         {
@@ -40,7 +44,7 @@ namespace GIns.Server.Controllers.Excel
         //    this._hostingEnvironment = hostingEnvironment;
         //}
 
-        public async Task<IActionResult> ImportExcelAsync(IFormFile formFile)
+        public async Task<GInsExcelMap> ImportExcelAsync(IFormFile formFile)
         {
             if (formFile == null || formFile.Length <= 0)
             {
@@ -106,21 +110,7 @@ namespace GIns.Server.Controllers.Excel
                             var sqlBulk = (SqlBulkCopy)bulk.InnerBulkCopy;
                         });
 
-                        //Multiple return set
-                       var Results = Sqlconn.QueryResults<PayorList, CompNameList, BenefitContList, BenefitNameList, ClientList>("doNewCustomers", Parameters.Empty);//,
-                                                                                        //Query.Returns(Some<AppList>.Records)
-                                                                                        //            .Then(Some<PayorList>.Records)
-                                                                                        //                .Then(Some<CompNameList>.Records)
-                                                                                        //                .Then(Some<BenefitContList>.Records)
-                                                                                        //                .Then(Some<BenefitNameList>.Records)
-                                                                                        //                .Then(Some<ClientList>.Records));
-
-
-                        IList<PayorList> PList = Results.Set1;
-                        IList<CompNameList> NameList = Results.Set2;
-                        IList<BenefitContList> BenList = Results.Set3;
-                        IList<BenefitNameList> BentNameList = Results.Set4;
-                        IList<ClientList> ClientList = Results.Set5;
+                       
                     }
 
                     ////Insert to SQL ExcelClients Table
@@ -130,20 +120,48 @@ namespace GIns.Server.Controllers.Excel
                     //// here just read and return
                     ////GInsExcelMap oGInsExcelMap = list;
 
-                    ////return oGInsExcelMap;
-
-
                 }
                 // retrieve the results into the respective models
                 //var PayorList = Results.Select<PayorList>();
                 //var CompNameList = Results.Read<CompNameList>();
 
-                return Ok(PList, NameList, BenList, BentNameList, ClientList);
-               // return Results;
+                //{ PayorList = PList, CompNameList = NameList, BenefitContList = BenList, BenefitNameList = BentNameList, ClientList = ClientList });
+                //return Ok(Results);
+                return list;// oGInsExcelMap;
             }
 
         }
 
+        [HttpGet("Search")]
+        public async Task<AppList> GetListAsync(string namelike)
+        {
 
+            using (var Sqlconn = new SqlConnection(conn))
+            {
+                 await Sqlconn.OpenAsync();
+
+                //Multiple return set
+                var Result = Sqlconn.QueryResults<PayorList, CompNameList, BenefitContList, BenefitNameList, ClientList>("doNewCustomers", Parameters.Empty);//,
+                                //Query.Returns(Some<AppList>.Records)
+                                //            .Then(Some<PayorList>.Records)
+                                //                .Then(Some<CompNameList>.Records)
+                                //                .Then(Some<BenefitContList>.Records)
+                                //                .Then(Some<BenefitNameList>.Records)
+                
+                //Return Multiple Recordsets
+                var mResults = new AppList
+                {
+                    PList = Result.Set1,
+                    CmpNameList = Result.Set2,
+                    BenefContList = Result.Set3,
+                    BenefNameList = Result.Set4,
+                    CliList = Result.Set5
+                };
+
+            return mResults;
+        }
+
+
+    }
     }
 }

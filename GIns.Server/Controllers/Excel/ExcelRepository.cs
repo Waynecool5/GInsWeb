@@ -10,7 +10,7 @@ namespace GIns.Server.Controllers.Excel
 {
     public interface IExcelRepository
     {
-        Task<IActionResult> ImportExcelAsync(IFormFile formFile);
+        Task<GInsExcelMap> ImportExcelAsync(IFormFile formFile);
 
     }
 }
