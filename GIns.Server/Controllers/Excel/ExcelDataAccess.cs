@@ -132,8 +132,8 @@ namespace GIns.Server.Controllers.Excel
 
         }
 
-        [HttpGet("Search")]
-        public async Task<AppList> GetListAsync(string namelike)
+
+        public async Task<AppList> GetListAsync()
         {
 
             using (var Sqlconn = new SqlConnection(conn))

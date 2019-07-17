@@ -41,7 +41,12 @@ namespace GIns.Server.Controllers.Excel
             return await _ExcelRepository.ImportExcelAsync(formFile);
         }
 
-
+        [HttpGet]
+        [Route("GetListAsync")]
+        public async Task<AppList> GetListAsync()
+        {
+            return await _ExcelRepository.GetListAsync();
+        }
     }
 }
         //// POST api/epplus/export
