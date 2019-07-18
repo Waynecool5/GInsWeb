@@ -44,7 +44,7 @@ namespace GIns.Server.Controllers.Excel
         //    this._hostingEnvironment = hostingEnvironment;
         //}
 
-        public async Task<GInsExcelMap> ImportExcelAsync(IFormFile formFile)
+        public async Task<ICollection<GInsExcelMap>> ImportExcelAsync(IFormFile formFile)
         {
             if (formFile == null || formFile.Length <= 0)
             {
@@ -72,7 +72,7 @@ namespace GIns.Server.Controllers.Excel
                         list.Add(new GInsExcelMap
                         {
                             ID = row - 1,
-                            PayorID = worksheet.Cells[row, 1].Value.ToString().ToString(),
+                            PayorID = worksheet.Cells[row, 1].Value.ToString(),
                             CompanyName = worksheet.Cells[row, 2].Value.ToString(),
                             BenefitContractID = worksheet.Cells[row, 3].Value.ToString(),
                             BenefitContractName = worksheet.Cells[row, 4].Value.ToString(),
@@ -92,6 +92,11 @@ namespace GIns.Server.Controllers.Excel
                         });
                     }
                 }
+
+                 // oGInsExcelMap = JsonConvert.DeserializeObject<GInsExcelMap>(list) ;
+
+                
+                //List<GInsExcelMap> oGInsExcelMap = list.ConvertAll(x => (oGInsExcelMap)x);
 
                 if (list.Count > 0)
                 {
@@ -113,27 +118,18 @@ namespace GIns.Server.Controllers.Excel
                        
                     }
 
-                    ////Insert to SQL ExcelClients Table
-
-
-                    //// add list to db ..
-                    //// here just read and return
-                    ////GInsExcelMap oGInsExcelMap = list;
+                    oGInsExcelMap = list.ToList();
 
                 }
                 // retrieve the results into the respective models
-                //var PayorList = Results.Select<PayorList>();
-                //var CompNameList = Results.Read<CompNameList>();
-
-                //{ PayorList = PList, CompNameList = NameList, BenefitContList = BenList, BenefitNameList = BentNameList, ClientList = ClientList });
-                //return Ok(Results);
-                return list;// oGInsExcelMap;
+                
+                return oGInsExcelMap;// oGInsExcelMap;
             }
 
         }
 
-        [HttpGet("Search")]
-        public async Task<AppList> GetListAsync(string namelike)
+
+        public async Task<AppList> GetListAsync()
         {
 
             using (var Sqlconn = new SqlConnection(conn))
@@ -142,14 +138,14 @@ namespace GIns.Server.Controllers.Excel
 
                 //Multiple return set
                 var Result = Sqlconn.QueryResults<PayorList, CompNameList, BenefitContList, BenefitNameList, ClientList>("doNewCustomers", Parameters.Empty);//,
-                                //Query.Returns(Some<AppList>.Records)
-                                //            .Then(Some<PayorList>.Records)
-                                //                .Then(Some<CompNameList>.Records)
-                                //                .Then(Some<BenefitContList>.Records)
-                                //                .Then(Some<BenefitNameList>.Records)
-                
+                                                                                                                                                             //Query.Returns(Some<AppList>.Records)
+                                                                                                                                                             //            .Then(Some<PayorList>.Records)
+                                                                                                                                                             //                .Then(Some<CompNameList>.Records)
+                                                                                                                                                             //                .Then(Some<BenefitContList>.Records)
+                                                                                                                                                             //                .Then(Some<BenefitNameList>.Records)
+
                 //Return Multiple Recordsets
-                var mResults = new AppList
+                AppList mResults = new AppList
                 {
                     PList = Result.Set1,
                     CmpNameList = Result.Set2,
@@ -157,6 +153,7 @@ namespace GIns.Server.Controllers.Excel
                     BenefNameList = Result.Set4,
                     CliList = Result.Set5
                 };
+
 
             return mResults;
         }

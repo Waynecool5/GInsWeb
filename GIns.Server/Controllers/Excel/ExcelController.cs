@@ -12,12 +12,14 @@ using System.Threading;
 using Newtonsoft.Json;
 using Insight.Database;
 using System.Data.SqlClient;
-
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace GIns.Server.Controllers.Excel
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     public class ExcelController : Controller
     {
@@ -31,16 +33,23 @@ namespace GIns.Server.Controllers.Excel
         }
 
 
-    
+
         // POST api/epplus/import
-       // [HttpPost("import")]
+        [AllowAnonymous]
         [HttpPost]
         [Route("ImportExcelAsync")]
-        public async Task<GInsExcelMap> ImportExcelAsync(IFormFile formFile)
+        public async Task<ICollection<GInsExcelMap>> ImportExcelAsync(IFormFile formFile)
         {
             return await _ExcelRepository.ImportExcelAsync(formFile);
         }
 
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("GetListAsync")]
+        public async Task<AppList> GetListAsync()
+        {
+            return await _ExcelRepository.GetListAsync();
+        }
 
     }
 }

@@ -4,12 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using GIns.Shared;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace GIns.Server.Controllers.Policy
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     public class PolicyController : Controller
     {
@@ -22,13 +25,14 @@ namespace GIns.Server.Controllers.Policy
         }
 
         // GET: api/<controller>
+        [AllowAnonymous]
         [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
-        // GET: api/<controller>
+        [AllowAnonymous]
         [HttpGet]
         [Route("GetPoliciesAsync")]
                 public async Task<IEnumerable<Policies>> GetPoliciesAsync(int apiType)
