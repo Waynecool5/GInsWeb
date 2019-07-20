@@ -15,8 +15,6 @@ namespace GIns.Shared
     }
 
 
-    
-
     public class PayorList
     {
         public int ID { get; set; }
