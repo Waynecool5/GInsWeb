@@ -33,7 +33,6 @@ namespace GIns.Server.Controllers.Customer
         }
 
         // GET: api/<controller>
-        //[AllowAnonymous]
         [HttpGet]
         [Route("GetCustomersAsync")]
         public async Task<IEnumerable<Customers>> GetCustomersAsync(int apiType)

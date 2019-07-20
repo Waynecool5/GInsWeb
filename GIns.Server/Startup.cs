@@ -64,6 +64,7 @@ namespace GIns.Server
             services.AddMvc().AddNewtonsoftJson();
             services.AddResponseCompression(opts =>
             {
+                opts.EnableForHttps = true;
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });

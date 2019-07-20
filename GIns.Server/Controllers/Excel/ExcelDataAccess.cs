@@ -29,7 +29,7 @@ namespace GIns.Server.Controllers.Excel
         private readonly string conn = "Data Source=" + ClsGlobal.SqlSource2 + "; Initial Catalog=" + ClsGlobal.SqlCatalog + "; Persist Security Info=True;" +
                   "User ID=" + ClsGlobal.SqlUser + ";Password=" + ClsGlobal.SqlPassword + "";
 
-        private readonly AppList mResults;
+        //private readonly AppList mResults;
 
         public ExcelDataAccess()
         {
