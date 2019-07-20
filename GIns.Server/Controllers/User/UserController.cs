@@ -5,19 +5,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using GIns.Shared;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 
 //For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace GIns.Server.Controllers.User
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     [Route("api/[controller]")]
     public class UserController : Controller
     {
+        public UserModel user { get; set; }
         private IUserRepository _UserRepository;
-
 
         public UserController(IUserRepository UserRepository)
         {
@@ -25,28 +24,33 @@ namespace GIns.Server.Controllers.User
         }
 
         // GET: api/<controller>
-        [AllowAnonymous]
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        //[AllowAnonymous]
+        //[HttpGet]
+        //public IEnumerable<string> Get()
+        //{
+        //    return new string[] { "value1", "value2" };
+        //}
 
         // GET: api/<controller>
         [AllowAnonymous]
-        [HttpGet]
-        [Route("GetUsersAsync")]
-        public async Task<IEnumerable<Users>> GetUsersAsync(int apiType)
+        [HttpPost]
+        [Route("authenticate")]
+        public IActionResult Authenticate([FromBody]UserModel userParam)
         {
-            return await _UserRepository.GetUsersAsync(apiType);
+            user = _UserRepository.Authenticate(userParam.Username, userParam.Password, userParam.APPId, userParam.APIData, userParam.APITimeStamp);
+
+            if (user == null)
+                return BadRequest(new { message = "Username or password is incorrect" });
+
+            return Ok(user);
         }
 
-        [AllowAnonymous]
+
         [HttpGet]
-        [Route("GetAll")]
-        public async Task<IEnumerable<Users>> GetAll()
+        public IActionResult GetAll()
         {
-            return await _UserRepository.GetAll();
+            var users = _UserRepository.GetAll();
+            return Ok(users);
         }
     }
 }

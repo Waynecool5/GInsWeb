@@ -8,9 +8,15 @@ namespace GIns.Server.Controllers.User
 {
     public interface IUserRepository
     {
-        //object Authenticate(string loginName, string loginPwd, string userLevel);
-        Task<IEnumerable<Users>> GetUsersAsync(int apiType);
-        Task<IEnumerable<Users>> GetAll();
-        
+        UserModel Authenticate(string username, string password, string appid, string apidata, string apiTime);
+
+        IEnumerable<UserModel> GetAll();
+
     }
 }
+
+//public interface IUserService
+//{
+//    Users Authenticate(string username, string password);
+//    IEnumerable<Users> GetAll();
+//}
